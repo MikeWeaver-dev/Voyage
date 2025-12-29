@@ -1,3 +1,5 @@
+**Backgorund**
+
 After leaving my last job, I took a year off to accomplish two things: travel, and code. Along with building this portfolio, I went on seven international trips. I felt like making an app about it would be kinda cool!
 
 This is a social media site centered on trips and travel. The perfect candidate for an app that offers complex database and CRUD handling, while also tying in something cool about my personal life! Check it out at Mikeweaver.dev/Voyage
@@ -6,5 +8,19 @@ Voyage is built on React and is optimized for desktop. All data is handles via F
 
 This is my first time using React and my first time really getting in the nitty-gritty of CSS. I did a pretty good job, but I think some of my future projects (AIChef, SpotifyLab) really showcase my design and styling work! I hope you take a look under the hood and enjoy.
 
-Thanks,
-Mike
+**Key Features**
+- Compelling UI
+- Optimized for Web and Mobile
+- Complex Data synthesis
+- GIS
+- Census API Integation
+
+**Tech Stack**
+- R
+- R-Shiny
+- R-Studio
+- TidyCensus
+
+**Installation**
+- Install R-Studio and packages listed in "Library" section of code (dplyr, sf, tidycensus, etc)
+- open r files 
