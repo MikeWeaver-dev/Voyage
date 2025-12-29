@@ -9,17 +9,24 @@ Voyage is built on React and is optimized for desktop. All data is handles via F
 This is my first time using React and my first time really getting in the nitty-gritty of CSS. I did a pretty good job, but I think some of my future projects (AIChef, SpotifyLab) really showcase my design and styling work! I hope you take a look under the hood and enjoy.
 
 **Key Features**
-- Compelling UI
-- Optimized for Web and Mobile
-- Complex Data synthesis
-- GIS
-- Census API Integation
+- User authentication & login
+- Complex CRUD and database handling
+- Full scalability for an indefinite number of users
+- Full social media funcitonailty, including:
+  -  Profiles
+  -  Following
+  -  Posts
+  -  Sub-Posts
+  -  Likes
+  -  Feed
 
 **Tech Stack**
-- R
-- R-Shiny
-- R-Studio
-- TidyCensus
+- React
+- Firebase
+- HTML
+- CSS
+- Javascript
+- JSX
 
 **Installation**
 - Install R-Studio and packages listed in "Library" section of code (dplyr, sf, tidycensus, etc)
