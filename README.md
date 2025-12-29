@@ -1,2 +1,10 @@
-# Voyage
-Voyage is a full service social media site that is ready to scale indefinitely and offers sophisticated CRUD handling via Firebase. The app features user authentication, profiles, follows, posts, likes and more 
+After leaving my last job, I took a year off to accomplish two things: travel, and code. Along with building this portfolio, I went on seven international trips. I felt like making an app about it would be kinda cool!
+
+This is a social media site centered on trips and travel. The perfect candidate for an app that offers complex database and CRUD handling, while also tying in something cool about my personal life! Check it out at Mikeweaver.dev/Voyage
+
+Voyage is built on React and is optimized for desktop. All data is handles via Firebase, so it updates dynamically for all users and is scalable for an indefinite number of users. The social media site is fully operational and includes user authentication, logins, profiles, follows, feeds, likes and more. Go ahead and try it out, follow some accounts and check out the functionality!
+
+This is my first time using React and my first time really getting in the nitty-gritty of CSS. I did a pretty good job, but I think some of my future projects (AIChef, SpotifyLab) really showcase my design and styling work! I hope you take a look under the hood and enjoy.
+
+Thanks,
+Mike
