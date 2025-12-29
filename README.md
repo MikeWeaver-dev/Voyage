@@ -29,5 +29,8 @@ This is my first time using React and my first time really getting in the nitty-
 - JSX
 
 **Installation**
-- Install R-Studio and packages listed in "Library" section of code (dplyr, sf, tidycensus, etc)
-- open r files 
+- Install node.js, Vite, React, Tailwind
+- On PC, run "npm create vite@latest"
+- Select Javascript & React
+- Leave node_module untouched. Update the other folders with my code here on Github
+- Note: The code on github uses "props" that i pre-filled on javascript, so it will have some dummy accounts already loaded in. it will not have access to my firebase server.
