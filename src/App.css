@@ -1,0 +1,12 @@
+/* have to leave this in place or it looks weird */
+
+#root {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #faf8f5;
+  min-width: 1000px;
+  width: auto;
+  min-height: 100vh;
+}
+
