@@ -24,8 +24,6 @@ function Main() {
     handleToggleLike, isTripLiked, getLikeCount,
   } = useAppData(); 
 
-
-
 // here is the front end. it basically just calls on a few components I have created and then navigates to one of several pages depending what buttons the user clicks. the pages are in pages.jsx
   return (
     <>

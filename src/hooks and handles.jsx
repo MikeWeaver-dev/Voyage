@@ -46,8 +46,6 @@ export function useAppData() {
     return trip?.Likes.includes(ActiveUser.Bio.UserID) || false;
   };
 
-
-
   const getLikeCount = (tripId) => {
     const trip = trips.find(t => t.TripID === tripId);
     return trip?.Likes.length || 0;
