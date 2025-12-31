@@ -1,0 +1,720 @@
+/* my CSS skills are ok, and I'm familiar with all the basics. the more complex stuff like mobile friendliness i got from ChatGPT */
+
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #faf8f5; /* Change this to your cream color */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #faf8f5; /* Add this */
+}
+
+
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #faf8f5; /* Change this */
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+.Header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 85px;                
+  background: linear-gradient(90deg, #d4363c, #e46064);
+  color: #fefdfb;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.Headerul {
+  display: flex;
+  list-style: none;
+  margin: 0px;
+}
+
+.Header h1 {
+  color: #fefdfb;
+  font-family: 'Lobster', cursive;
+  font-size: 36px;
+}
+
+.Navbar {
+  position: fixed;
+  top: 85px;
+  left: 0;
+  width: 100%;
+  padding: 8px 4%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #faf8f5, #faf8f5);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1100;
+}
+
+.Navbar-scroll-wrapper {
+  flex: 1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-right: 16px;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 30px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 30px), transparent);
+}
+
+.Navbar-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.Navbar-left {
+  display: flex;
+  gap: 12px;
+  min-width: max-content;
+  padding: 0 10px;        
+}
+
+.Navbar-spacer {
+  flex-grow: 1;
+  min-width: 20px;
+}
+
+.Navbar-right {
+  margin-right: 6%;
+}
+
+.Navbar-avatar {
+  width: auto;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid #d4363c;
+  object-fit: cover;
+  margin-left: 8px;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+  margin-right: 8px;
+}
+
+.Navbar-avatar:hover {
+  transform: scale(1.08);
+}
+
+.Navbar button {
+  background: #fcfaf7;
+  color: #d4363c;
+  border: 2px solid #d4363c;
+  padding: 7px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-top: 1px;
+}
+
+.Navbar button:hover {
+  background: #d4363c;
+  color: #fcfaf7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.Navbar button.active {
+  background: #d4363c;
+  color: #fcfaf7;
+  box-shadow: 0 4px 10px rgba(212, 54, 60, 0.3);
+}
+
+.ClassicRed {
+  background: #fcfaf7;
+  color: #d4363c;
+  border: 2px solid #d4363c;
+  padding: 7px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ClassicRed:hover {
+  background: #d4363c;
+  color: #fcfaf7;
+  border: 2px solid #d4363c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.ClassicRed.active {
+  background: #d4363c;
+  color: #fcfaf7;
+  box-shadow: 0 4px 10px rgba(212, 54, 60, 0.3);
+}
+
+.ClassicMint {
+  background: #fcfaf7;
+  color: #219c97;
+  border: 2px solid #219c97;
+  padding: 7px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ClassicMint:hover {
+  background: #219c97;
+  color: #fcfaf7;
+  border: 2px solid #219c97;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.ClassicMint.active {
+  background: #219c97;
+  color: #fcfaf7;
+  box-shadow: 0 4px 10px rgba(212, 54, 60, 0.3);
+}
+
+.ClassicGray {
+  background: #fcfaf7;
+  color: #5c5b5b;
+  border: 2px solid #5c5b5b;
+  padding: 7px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ClassicGray:hover {
+  background: #5c5b5b;
+  color: #fcfaf7;
+  border: 2px solid #5c5b5b;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.ClassicGray.active {
+  background: #5c5b5b;
+  color: #fcfaf7;
+  box-shadow: 0 4px 10px rgba(212, 54, 60, 0.3);
+}
+
+.SpecialRed {
+  background: #fcfaf7;
+  color: #d4363c;
+  border: 2px solid #d4363c;
+  padding: 7px 12px;
+  border-radius: 100px;
+  cursor: pointer;
+  margin-right: 94%;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-top: -50px;
+}
+
+.SpecialRed:hover {
+  background: #d4363c;
+  color: #fcfaf7;
+  border: 2px solid #d4363c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.SpecialRed.active {
+  background: #d4363c;
+  color: #fcfaf7;
+  box-shadow: 0 4px 10px rgba(212, 54, 60, 0.3);
+}
+
+/* --- Mobile friendliness --- */
+@media (max-width: 1000px) {
+  .Navbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 3%;
+  }
+
+  .Navbar-left,
+  .Navbar-right {
+    flex-direction: row;
+    margin: 0;
+    margin-right: 70px;
+  }
+
+  .Navbar button {
+    flex: 0 0 auto;
+    padding: 7px 12px;
+    font-size: 14px;
+  }
+}
+
+article.Journal-Entry{
+  display: flex;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.CardHeader {
+  width: auto;
+  display: flex;
+  background: linear-gradient(90deg, #fa8b8b, #f7c7c9);
+  color: #faf7f7;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  padding: 4px 16px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.follow-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.follow-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.follow-toggle .slider {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 20px;
+  transition: background-color 0.3s;
+}
+
+.follow-toggle .slider::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 2px;
+  top: 2px;
+  background-color: #fcfaf7;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.follow-toggle input:checked + .slider {
+  background-color: #d4363c; 
+}
+
+.follow-toggle input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+.follow-toggle .follow-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #faf9f8;
+}
+
+.CardHeader img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid #faf7f7;
+  object-fit: cover;
+}
+
+.Card {
+  flex-direction: column;
+  gap: 8px ;
+  width: 100%;
+  background: #f9f6f6;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.Card:hover {
+  box-shadow: 0 9px 18px rgba(0, 0, 0, 0.17);
+}
+
+.CardBody {
+  display: flex;    
+  flex-direction: row;   
+  padding: 16px;
+  gap: 16px;            
+  align-items: flex-start;
+}
+
+.ellipsis-link {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
+  color: #444444;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 1.3%;
+  margin-bottom: 10px;
+  width: 200px;
+}
+
+.ellipsis-link:hover {
+  text-decoration: underline;
+  color: #6e6e6e;
+}
+
+
+.UserID {
+  background: none;
+  border: none;
+  color: #fcfaf7;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.UserIDStatic {
+  color: #fcfaf7;
+  font-weight: 600;
+  font-size: 15px;
+  margin-right: 8px;
+  margin-left: 15px;
+  margin-top: 5px
+}
+
+.UserID:hover {
+  color: #ff9595;
+  text-decoration: underline;
+}
+
+.TripName {
+  background: none;
+  border: none;
+  font-weight: bold;
+  font-size: 24px;
+  cursor: pointer;
+  color: #262626dc;
+  margin-bottom: 0px;
+  margin-left: -25px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 350px;
+  text-align: left;
+}
+
+.TripName:hover {
+  color: #ff9595;
+  text-decoration: underline;
+}
+
+
+.EditButton {
+  background: none;
+  border: none;
+  color: #d4363c;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-left: 4px;
+}
+
+.EditButton:hover {
+  color: #ff9595;
+  text-decoration: underline;
+}
+
+
+.Main-Image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;          /* <-- Make this cover the container */
+  object-position: center;  
+}
+
+.Main-Image-Container {
+  width: 250px;
+  height:300px;
+  overflow: hidden;
+  border-radius: 7px;
+  flex-shrink: 0;
+  margin-right: 19px;
+}
+
+.ContainerTop {
+  display: flex;                
+  align-items: center;          
+  gap: 10px;                   
+  width: 100%;                 
+  padding: 0px;
+  margin-left: -4px;             
+}
+
+.user-avatar {
+  border-radius: 50%;
+  border: 3px solid #d4363c;
+  margin-bottom: 0px;
+  min-width: 200px;
+  height: auto;
+  max-width: 200px; 
+}
+
+.Fact {
+  display: block;
+}
+
+
+h2 {
+  margin-bottom: 4px;
+  margin-top: 0px
+}
+
+.InputSection {
+  margin-bottom: 16px;
+}
+
+.InputSection label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.InputSection input,
+.InputSection textarea {
+  width: 350px;
+  padding: 8px;
+  font-size: 16px;
+  text-align: left;
+  color: rgb(101, 101, 101);
+  border-radius: 10px;
+  border-color: #5c5b5b;
+  border-width: 2px;
+}
+
+.InputSection input::placeholder,
+.InputSection textarea::placeholder {
+  color: lightgray;
+}
+
+.InputSection textarea {
+  height: 200px; 
+}
+
+.InputSectionMint {
+  margin-bottom: 16px;
+}
+
+.InputSectionMint label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.InputSectionMint input,
+.InputSectionMint textarea {
+  width: 350px;
+  padding: 8px;
+  font-size: 16px;
+  text-align: left;
+  color: rgb(101, 101, 101);
+  border-radius: 10px;
+  border-color: #219c97;
+  border-width: 2px;
+}
+
+.InputSectionMint input::placeholder,
+.InputSectionMint textarea::placeholder {
+  color: lightgray;
+}
+
+.InputSectionMint textarea {
+  height: 200px; 
+}
+
+.Experience{
+  color: #219c97;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 600;
+
+}
+
+/* Just for the window that says are you sure you want to delete. from chatgpt */
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+}
+
+.delete-modal-content {
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  padding: 28px 20px;
+}
+
+.delete-modal-title {
+  margin: 0 0 12px;
+  color: #d4363c;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+.delete-modal-text {
+  margin: 0 0 24px;
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.delete-modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.delete-modal-cancel {
+  background-color: #fcfaf7 !important;
+  color: #666 !important;
+  border: 1px solid #ccc !important;
+}
+
+.delete-modal-delete {
+  background-color: #d4363c !important;
+  color: #fcfaf7 !important;
+}
+
+.custom-upload-btn {
+  background: #fcfaf7;
+  color: #219c97;
+  border: 2px solid #219c97;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 580;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.like-button {
+  all: unset; 
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-bottom: 0px;
+  margin-left: 25px;
+  margin-right: 15px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  outline: none !important;   
+  box-shadow: none !important;
+  margin-left: auto !important; 
+  margin-right: 12px
+}
+
+.like-button:hover {
+  background-color: rgba(212, 54, 60, 0.08);
+}
+
+
+.like-count {
+  font-weight: 600;
+  font-size: 15px;
+  color: #666;
+  transition: 0.2s ease;
+}
+
