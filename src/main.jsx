@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
@@ -7,8 +7,6 @@ import { Header, Navbar} from "./components.jsx";
 import {MyTrips, MyFeed, BioPage, FindFriends, MyFriends, TripEdit, TripEdit2, AddExperience, ViewUser, ViewTrip, EditUser, AddTrip, EditExperience, Login} from "./pages.jsx"
 
 function Main() {
-
-// delete trip and delete experience
 
 // just importing some functions from hooks here. kinda like a backend
   const {
@@ -23,6 +21,12 @@ function Main() {
     handleAddTrip, handleAddExperience, handleToggleFollow, 
     handleToggleLike, isTripLiked, getLikeCount,
   } = useAppData(); 
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [page]);
 
 // here is the front end. it basically just calls on a few components I have created and then navigates to one of several pages depending what buttons the user clicks. the pages are in pages.jsx
   return (
