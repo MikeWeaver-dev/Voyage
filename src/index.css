@@ -7,7 +7,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #faf8f5; /* Change this to your cream color */
+  background-color: #faf8f5; 
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -29,7 +29,7 @@ body {
   padding: 0;
   min-height: 100vh;
   width: 100%;
-  background-color: #faf8f5; /* Add this */
+  background-color: #faf8f5;
 }
 
 
@@ -61,7 +61,7 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #faf8f5; /* Change this */
+    background-color: #faf8f5; 
   }
   a:hover {
     color: #747bff;
@@ -207,6 +207,20 @@ button:focus-visible {
   border: 2px solid #d4363c;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
+
+.ClassicRed--white {
+  background: white;
+  color: #d4363c;
+  border: 1px solid #d4363c;
+}
+
+.ClassicRed--white:hover {
+  background: #d4363c;
+  color: #fcfaf7;
+  border: 1px solid #d4363c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
 
 .ClassicRed.active {
   background: #d4363c;
@@ -530,7 +544,7 @@ article.Journal-Entry{
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;          /* <-- Make this cover the container */
+  object-fit: cover;       
   object-position: center;  
 }
 
@@ -742,4 +756,106 @@ h2 {
   color: #666;
   transition: 0.2s ease;
 }
+
+.AuthPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 20vh;
+  background: #faf8f5;
+}
+
+.AuthCard {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.AuthTitle {
+  color: #d4363c;
+  margin-bottom: 4px;
+}
+
+.AuthSubtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.AuthForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.AuthInput {
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.AuthLink {
+  background: none;
+  border: none;
+  color: #d4363c;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.AuthDivider {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #aaa;
+}
+
+.AuthDivider span {
+  font-size: 12px;
+}
+
+.AuthError {
+  color: #d4363c;
+  font-size: 14px;
+}
+
+.AuthMessage {
+  color: #219c97;
+  font-size: 14px;
+}
+
+.GoogleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+
+  background: #fff;
+  border: 1px solid #dadce0;
+  color: #3c4043;
+
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.GoogleButton img {
+  width: 18px;
+  height: 18px;
+}
+
+.GoogleButton:hover {
+  background: #f7f8f8;
+}
+
 

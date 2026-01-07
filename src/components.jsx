@@ -1,13 +1,16 @@
 
 import {UserID, Accounts, Trips, Experiences} from "./props.jsx";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { storage } from "../firebase/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 //components are the thing that makes React so powerful and the thing I wanted to get familiar with when learning react. I made a good number here and loop through them routinely in my frontend using the map functions
 
 export function TravelImg(){
   return(
-    <img src = "/src/assets/Travel-Logo.png" 
+    <img src = "/assets/Travel-Logo.png" 
     width = "83"
     alt = "Travel Logo"/>
   )
@@ -15,7 +18,7 @@ export function TravelImg(){
 
 export function Marker(){
 return(
-  <img src = "/src/assets/Marker.png" 
+  <img src = "/assets/Marker.png" 
   width = "25"
   alt = "Marker"
   style={{position: "fixed"}}/>
@@ -93,7 +96,7 @@ export function Entry({
             )}
 
             <div className="ContainerTop">
-              <img src="/src/assets/Marker.png" width="25" alt="Marker" />
+              <img src="/assets/Marker.png" width="25" alt="Marker" />
               <NavLink
                 className="TripName"
                 onClick={() => { setViewTripID(TripID) }}
@@ -385,7 +388,7 @@ export function Feed({
     return (
         <>
             <div style={{ height: '100px' }}></div>
-            <h2 style={{color: "gray"}}>
+            <h2 style={{color: "gray", textAlign: "center" }}>
             You have no feed because you are not following anyone who has posted a trip! Navigate to 'Find Friends' and follow some accounts to populate your feed!
             </h2>
             <div style={{ height: '150px' }}></div>
@@ -436,10 +439,12 @@ export function Footer(){
 
 export function DeleteTripButton({ TripID, onDeleteTrip }) {
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate(); // ADD THIS
 
-  const handleDelete = () => {
-    onDeleteTrip(TripID);
+  const handleDelete = async () => {
+    await onDeleteTrip(TripID);
     setShowModal(false);
+    navigate("/trips"); // ADD THIS
   };
 
   return (
@@ -464,10 +469,12 @@ export function DeleteTripButton({ TripID, onDeleteTrip }) {
 
 export function DeleteExperienceButton({ ExperienceID, onDeleteExperience }) {
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate(); // ADD THIS
 
-  const handleDelete = () => {
-    onDeleteExperience(ExperienceID);
+  const handleDelete = async () => {
+    await onDeleteExperience(ExperienceID);
     setShowModal(false);
+    navigate("/trips"); // ADD THIS
   };
 
   return (
@@ -489,39 +496,63 @@ export function DeleteExperienceButton({ ExperienceID, onDeleteExperience }) {
   );
 }
 
+
 export function ImageUpload({ onImageSelect, initialImage, defaultImage }) {
   const [preview, setPreview] = useState(
-    initialImage && initialImage.length > 0 ? initialImage : defaultImage
+    (initialImage && initialImage.length > 0) ? initialImage : (defaultImage || "/assets/Generic Trip.jpeg")
   );
+  const [uploading, setUploading] = useState(false);
 
-  const handleFileChange = (e) => {
+  // Update preview when initialImage changes (e.g., when editing existing content)
+  useEffect(() => {
+    if (initialImage && initialImage.length > 0) {
+      setPreview(initialImage);
+    } else if (defaultImage) {
+      setPreview(defaultImage);
+    }
+  }, [initialImage, defaultImage]);
+
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64 = reader.result;
-      setPreview(base64);
-      onImageSelect(base64);
-    };
-    reader.readAsDataURL(file);
+    setUploading(true);
+
+    try {
+      const filename = `${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, `images/${filename}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      setPreview(downloadURL);
+      onImageSelect(downloadURL);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Failed to upload image. Please try again.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
-    <div style={{ marginBottom: "20px" }}>
+    <div style={{ marginBottom: "20px", alignItems: "center" }}>
       <div className="Main-Image-Container">
         <img src={preview} alt="Preview" className="Main-Image" />
       </div>
-      <div style={{ height: "20px" }} />
-      <label htmlFor="file-upload" className="custom-upload-btn">
-        Upload Picture
-      </label>
+      <div style={{ height: "20px", alignItems: "center" }} />
+      <div style={{display:"flex", justifyContent: "center"}}>
+        <label htmlFor="file-upload" className="custom-upload-btn">
+          {uploading ? "Uploading..." : "Upload Picture"}
+        </label>
+        <div style={{width: "13px"}}></div>
+      </div>
       <input
         id="file-upload"
         type="file"
         accept="image/*"
         onChange={handleFileChange}
         style={{ display: "none" }}
+        disabled={uploading}
       />
     </div>
   );

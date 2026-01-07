@@ -1,8 +1,11 @@
 import {Entry, Profile, InputSection, Experience, Feed, Footer, DeleteTripButton , DeleteExperienceButton, ImageUpload } from "./components.jsx";
 import {Trips} from "./props.jsx";
 import { useState, useEffect } from "react";
-import { NavLink} from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/authContext";
+
+import {
+  loginWithGoogle, loginWithEmail, registerWithEmail, resetPassword, logout,} from "../firebase/auth";
 
 // every page a user can navigate to has it's fornt end code here. Some of the code looks complex but it's really not, it's just passing props back and forth and doing a few hooks and calling of functions defined in main.jsx
 
@@ -19,6 +22,15 @@ export function MyFeed({
   getLikeCount,
   handleToggleLike
 }) {
+
+  if (!ActiveUser) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "100px" }}>
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
+
   const followingList = ActiveUser.Bio.Following;
   const feedTrips = trips.filter(trip =>
   followingList.includes(trip.PosterID)
@@ -57,6 +69,15 @@ export function MyTrips({
   getLikeCount,
   handleToggleLike
 }) {
+
+  if (!ActiveUser) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "100px" }}>
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
+
   const userID = ActiveUser.Bio.UserID;
   const myTrips = trips.filter(trip => trip.PosterID === userID);
 
@@ -85,7 +106,7 @@ export function MyTrips({
       ) : (
         <>
             <div style={{ height: '100px' }}></div>
-            <h2 style={{color: "gray"}}>
+            <h2 style={{color: "gray", textAlign: "center" }}>
             You haven't posted any trips yet! Click the red + in the top left corner to post your first trip
             </h2>
             <div style={{ height: '150px' }}></div>
@@ -97,6 +118,22 @@ export function MyTrips({
 }
 
   export function BioPage({ActiveUser, setCurrentUserID}) {
+
+      function LogoutButton() {
+      const navigate = useNavigate();
+
+      const handleLogout = async () => {
+        await logout();
+        navigate("/login", { replace: true });
+      };
+
+      return (
+        <button onClick={handleLogout} className="ClassicRed" style={{height: "42px", lineHeight: "0px",}}>
+          Logout
+        </button>
+      );
+    }
+
     return(
       <div style={{ textAlign: "center" }}>
           <img
@@ -117,9 +154,7 @@ export function MyTrips({
             <NavLink className="ClassicRed" to="/edit-profile" style={{marginBottom: "40px", marginRight: "20px"}} >
                 Edit Profile
             </NavLink>
-            <NavLink className="ClassicRed" to="/login" style={{marginBottom: "40px"}} >
-                Logout
-            </NavLink>
+            <LogoutButton/>
           </div>  
           <Footer/>
         </div>
@@ -153,8 +188,8 @@ const notFollowing = Object.values(accounts).filter(
         ))
       ) : (
         <>
-            <div style={{ height: '100px' }}></div>
-            <h2 style={{ color: "gray" }}>
+            <div style={{ height: '100px'}}></div>
+            <h2 style={{ color: "gray", textAlign: "center" }}>
               You are following everyone!
             </h2>
             <div style={{ height: '150px' }}></div>
@@ -194,7 +229,7 @@ const following = Object.values(accounts).filter(
       ) : (
         <>
             <div style={{ height: '100px' }}></div>
-            <h2 style={{ color: "gray" }}>
+            <h2 style={{ color: "gray", textAlign: "center" }}>
             You aren't following anyone yet!
             </h2>
             <div style={{ height: '150px' }}></div>
@@ -365,6 +400,7 @@ export function ViewTrip({
 
 export function TripEdit2({ TripID, Trips, onDeleteTrip, onSaveTrip }) {
   const trip = Trips.find(t => t.TripID === TripID);
+  const navigate = useNavigate();
 
   const [location, setLocation] = useState(trip?.Location || "");
   const [dates, setDates] = useState(trip?.Dates || "");
@@ -389,6 +425,7 @@ export function TripEdit2({ TripID, Trips, onDeleteTrip, onSaveTrip }) {
       PhotoSource: photoSource,
     };
     onSaveTrip(updated);
+    navigate("/trips"); 
   };
 
   if (!trip) {
@@ -398,8 +435,8 @@ export function TripEdit2({ TripID, Trips, onDeleteTrip, onSaveTrip }) {
   return (
     <>
       <div style={{ height: '30px' }}></div>
-      <h2>Edit Trip ✍️</h2>
-      <div style={{ height: '10px' }}></div>
+      <h2 style={{textAlign: "center"}}>Edit Trip ✍️</h2>
+      <div style={{ height: '30px' }}></div>
       <form
         onSubmit={(e) => {
             e.preventDefault();
@@ -463,6 +500,7 @@ export function AddExperience({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [photoSource, setPhotoSource] = useState("");
+  const navigate = useNavigate();
 
   const handleSave = () => {
     const newExp = {
@@ -472,16 +510,17 @@ export function AddExperience({
       Date: date,
       Title: title,
       Description: description,
-      PhotoSource: photoSource || "src/assets/Generic Trip.jpeg",
+      PhotoSource: photoSource || "/assets/Generic Trip.jpeg",
     };
     onSaveExperience(newExp);
+    navigate("/trips"); 
   };
 
   return (
     <>
       <div style={{ height: "30px" }}></div>
-      <h2>Add Experience 🌄</h2>
-      <div style={{ height: "10px" }}></div>
+      <h2 style={{textAlign: "center"}}>Add Experience 🌄</h2>
+      <div style={{ height: "30px" }}></div>
       <form
         onSubmit={(e) => {
             e.preventDefault();
@@ -495,8 +534,8 @@ export function AddExperience({
         <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ marginRight: "25px" }}>
             <ImageUpload
-                initialImage="src/assets/Generic Trip.jpeg"
-                defaultImage="src/assets/Generic Trip.jpeg"
+                initialImage="/assets/Generic Trip.jpeg"
+                defaultImage="/assets/Generic Trip.jpeg"
                 onImageSelect={setPhotoSource}
             />
             </div>
@@ -578,8 +617,8 @@ export function EditUser({ user, onSave }) {
   return (
     <>
       <div style={{ height: "30px" }}></div>
-      <h2>Update Profile</h2>
-      <div style={{ height: "10px" }}></div>
+      <h2 style={{textAlign: "center"}}>Update Profile</h2>
+      <div style={{ height: "30px" }}></div>
       <form
         onSubmit={(e) => {
             e.preventDefault();
@@ -628,7 +667,7 @@ export function EditUser({ user, onSave }) {
             />
             </div>
         </div>
-        <div style={{ marginTop: "25px" }}>
+        <div style={{display: "flex", justifyContent: "center", gap: "10px", marginTop: "25px" }}>
             <button className="ClassicMint" type="submit" >Save Changes</button>
             <NavLink className="ClassicMint" style={{ marginLeft: "10px" }} to="/profile">
               Cancel
@@ -645,23 +684,25 @@ export function AddTrip({ ActiveUser, onSaveTrip}) {
   const [dates, setDates] = useState("");
   const [fact, setFact] = useState("");
   const [photoSource, setPhotoSource] = useState("");
+  const navigate = useNavigate();
 
   const handleSave = () => {
     const newTrip = {
       Location: location,
       Dates: dates,
       Fact: fact,
-      PhotoSource: photoSource || "src/assets/Generic Trip.jpeg",
+      PhotoSource: photoSource || "/assets/Generic Trip.jpeg",
       PosterID: ActiveUser.Bio.UserID,
     };
     onSaveTrip(newTrip);
+    navigate("/trips"); 
   };
 
   return (
     <>
       <div style={{ height: "30px" }}></div>
-      <h2>Add Trip ✈️</h2>
-      <div style={{ height: "10px" }}></div>
+      <h2 style={{textAlign: "center" }}>Add Trip ✈️</h2>
+      <div style={{ height: "30px" }}></div>
 
 
       <form
@@ -677,8 +718,8 @@ export function AddTrip({ ActiveUser, onSaveTrip}) {
         <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ marginRight: "25px" }}>
             <ImageUpload
-                initialImage="src/assets/Generic Trip.jpeg"
-                defaultImage="src/assets/Generic Trip.jpeg"
+                initialImage="/assets/Generic Trip.jpeg"
+                defaultImage="/assets/Generic Trip.jpeg"
                 onImageSelect={setPhotoSource}
             />
             </div>
@@ -731,6 +772,7 @@ export function EditExperience({
   onDeleteExperience
 }) {
   const experience = experiences.find(e => e.ExperienceID === ExperienceID);
+  const navigate = useNavigate();
 
   const [place, setPlace] = useState("");
   const [date, setDate] = useState("");
@@ -760,6 +802,7 @@ export function EditExperience({
       TripID: experience.TripID,
     };
     onSaveExperience(updated);
+    navigate("/trips"); 
   };
 
   if (!experience) {
@@ -769,8 +812,8 @@ export function EditExperience({
   return (
     <>
       <div style={{ height: "30px" }}></div>
-      <h2>Edit Experience ✍️</h2>
-      <div style={{ height: "10px" }}></div>
+      <h2 style={{textAlign: "center"}}>Edit Experience ✍️</h2>
+      <div style={{ height: "30px" }}></div>
       <form
         onSubmit={(e) => {
             e.preventDefault();
@@ -837,14 +880,134 @@ export function EditExperience({
   );
 }
 
-export function Login(){
-    return(
-      <>
-        <div style={{ height: "80px" }}></div>
-        <h3>You have successfully logged out!</h3>
-      </>
-    )
+export function Login() {
+  const { user } = useAuth();
+
+  const [isSignup, setIsSignup] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  if (user) {
+    return <Navigate to="/feed" replace />;
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setMessage("");
+    setLoading(true);
+
+    try {
+      if (isSignup) {
+        await registerWithEmail(email, password);
+      } else {
+        await loginWithEmail(email, password);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      setError("Enter your email to reset your password.");
+      return;
+    }
+
+    try {
+      await resetPassword(email);
+      setMessage("Password reset email sent!");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  return (
+    <div className="AuthPage">
+      <div className="AuthCard">
+        <h2 className="AuthTitle">
+          {isSignup ? "Create your Voyage account 🌍" : "Welcome back to Voyage 🌍"}
+        </h2>
+
+        <p className="AuthSubtitle">
+          {isSignup
+            ? "Start sharing your travels with friends"
+            : "Log in to continue your journey"}
+        </p>
+
+        {error && <p className="AuthError">{error}</p>}
+        {message && <p className="AuthMessage">{message}</p>}
+
+        <form onSubmit={handleSubmit} className="AuthForm">
+          <input
+            type="email"
+            placeholder="Email"
+            className="AuthInput"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            className="AuthInput"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button
+            type="submit"
+            className="ClassicRed--white"
+            disabled={loading}
+          >
+            {loading
+              ? "Please wait..."
+              : isSignup
+              ? "Create Account"
+              : "Sign In"}
+          </button>
+        </form>
+
+        {!isSignup && (
+          <button
+            onClick={handleResetPassword}
+            className="AuthLink"
+          >
+            Forgot password?
+          </button>
+        )}
+
+        <div className="AuthDivider">
+          <span>OR</span>
+        </div>
+
+        {/* Google Sign-In */}
+        <button
+          onClick={loginWithGoogle}
+          className="GoogleButton"
+        >
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt="Google"
+          />
+          Continue with Google
+        </button>
+
+        <p className="AuthToggle">
+          {isSignup ? "Already have an account?" : "New to Voyage?"}
+          <button onClick={() => setIsSignup(!isSignup)} className = "ClassicRed--white" style={{ marginLeft: "30px" }}>
+            {isSignup ? "Sign in" : "Create account"}
+          </button>
+        </p>
+      </div>
+    </div>
+  );
 }
-
-
 
