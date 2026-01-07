@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { Accounts, Trips as InitialTrips, Experiences as InitialExperiences, UserID } from "./props.jsx";
+import { useNavigate } from "react-router-dom";
 
 // these hooks are the closest I really get to a backend! A lot of the heavy lifting on the backend side is done by my server Firebase. even the login screen
 export function useAppData() {
   const [accounts, setAccounts] = useState(Accounts);
   const [experiences, setExperiences] = useState(InitialExperiences);
-  const [page, setPage] = useState("myTrips");
   const [selectedPosterID, setSelectedPosterID] = useState(null);
   const [editTripID, setEditTripID] = useState(null);
   const [viewTripID, setViewTripID] = useState(null);
   const [ExperienceID, setExperienceID] = useState(null);
+  const navigate = useNavigate();
 
   const ActiveUser = accounts[UserID];
 
@@ -53,12 +54,12 @@ export function useAppData() {
 
   const handleDeleteTrip = (tripId) => {
     setTrips(prev => prev.filter(t => t.TripID !== tripId));
-    setPage("myTrips");
+    navigate("/trips");
   };
 
   const handleDeleteExperience = (experienceId) => {
     setExperiences(prev => prev.filter(exp => exp.ExperienceID !== experienceId));
-    setPage("myTrips");
+    navigate("/trips");
   };
 
   const handleSaveBio = (updatedBio) => {
@@ -75,26 +76,26 @@ export function useAppData() {
     setTrips(prev => prev.map(t =>
       t.TripID === updatedTrip.TripID ? { ...t, ...updatedTrip } : t
     ));
-    setPage("myTrips");
+    navigate("/trips");
   };
 
   const handleSaveExperience = (updatedExp) => {
     setExperiences(prev => prev.map(exp =>
       exp.ExperienceID === updatedExp.ExperienceID ? { ...exp, ...updatedExp } : exp
     ));
-    setPage("myTrips");
+    navigate("/trips");
   };
 
   const handleAddTrip = (newTrip) => {
     const newId = crypto.randomUUID();
     setTrips(prev => [{ ...newTrip, TripID: newId, Likes: [] }, ...prev]);
-    setPage("myTrips");
+    navigate("/trips");
   };
 
   const handleAddExperience = (newExp) => {
     const newId = crypto.randomUUID();
     setExperiences(prev => [{ ...newExp, ExperienceID: newId }, ...prev]);
-    setPage("myTrips");
+    navigate("/trips");
   };
 
   const handleToggleFollow = (targetUserID, shouldFollow) => {
@@ -116,7 +117,6 @@ export function useAppData() {
   };
 
   return {
-    page, setPage,
     ActiveUser,
     accounts,
     trips, 

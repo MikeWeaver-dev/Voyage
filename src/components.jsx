@@ -1,6 +1,7 @@
 
 import {UserID, Accounts, Trips, Experiences} from "./props.jsx";
 import React, { useState } from "react";
+import { NavLink} from "react-router-dom";
 
 //components are the thing that makes React so powerful and the thing I wanted to get familiar with when learning react. I made a good number here and loop through them routinely in my frontend using the map functions
 
@@ -55,7 +56,7 @@ function EntryHeader({ UserID }) {
 
 export function Entry({
   PhotoSource, PhotoAlt, Location, Dates, Fact, GoogleMapsLink,
-  PosterID, TripID, ActiveUser, setPage, setSelectedPosterID,
+  PosterID, TripID, ActiveUser, setSelectedPosterID,
   setEditTripID, setViewTripID,
   isTripLiked,
   getLikeCount,
@@ -71,31 +72,35 @@ export function Entry({
             <img className="Main-Image" src={PhotoSource} alt={PhotoAlt} />
           </div>
           <div>
-            <button
-              onClick={() => { setSelectedPosterID(PosterID); setPage("userSelected"); }}
-              style={{ color: "#d4363c", marginLeft: "-16px" }}
+            <NavLink
+              onClick={() => { setSelectedPosterID(PosterID)}}
+              to="/user"
+              style={{ color: "#d4363c", marginLeft: "0px" }}
               className="UserID"
             >
               {PosterID}
-            </button>
+            </NavLink>
 
             {isOwner && (
-              <button
-                onClick={() => { setEditTripID(TripID); setPage("tripEdit"); }}
+              <NavLink
+                onClick={() => { setEditTripID(TripID)}}
+                to="/trip-edit-selection"
                 className="EditButton"
+                style={{ marginLeft: "80px" }}
               >
-                Edit Trip
-              </button>
+                ✏️ Edit Trip
+              </NavLink>
             )}
 
             <div className="ContainerTop">
               <img src="/src/assets/Marker.png" width="25" alt="Marker" />
-              <button
+              <NavLink
                 className="TripName"
-                onClick={() => { setViewTripID(TripID); setPage("viewTrip"); }}
+                onClick={() => { setViewTripID(TripID) }}
+                to="/trip"
               >
                 {Location}
-              </button>
+              </NavLink>
               <a href={GoogleMapsLink} target="_blank" rel="noopener noreferrer" className="ellipsis-link">
                 View on Google Maps
               </a>
@@ -116,16 +121,16 @@ export function Entry({
   );
 }
 
-export function Navbar({ setPage, ActiveUser }) {
+export function Navbar({ ActiveUser }) {
   
   return (
     <nav className="Navbar">
       <div className="Navbar-scroll-wrapper">
         <div className="Navbar-left">
-          <button onClick={() => setPage("myTrips")}>My Trips</button>
-          <button onClick={() => setPage("myFeed")}>My Feed</button>
-          <button onClick={() => setPage("following")}>Following</button>
-          <button onClick={() => setPage("findFriends")}>Find Friends</button>
+          <NavLink to="/trips" className = "ClassicRedNav" >My Trips</NavLink>
+          <NavLink to="/feed" className = "ClassicRedNav">My Feed</NavLink>
+          <NavLink to="/following" className = "ClassicRedNav">Following</NavLink>
+          <NavLink to="/find-friends" className = "ClassicRedNav">Find Friends</NavLink>
           <span className="Navbar-spacer" />
         </div>
       </div>
@@ -136,7 +141,7 @@ export function Navbar({ setPage, ActiveUser }) {
           alt={ActiveUser.Bio.Name}
           className="Navbar-avatar"
         />
-        <button onClick={() => setPage("myProfile")}>My Profile</button>
+        <NavLink to="/profile" className = "ClassicRed">My Profile</NavLink>
       </div>
     </nav>
   );
@@ -169,7 +174,6 @@ export function Profile({
   UpcomingTrip,
   ActiveUser,
   PhotoSource,
-  setPage,
   setSelectedPosterID,
   UserID,
   onToggleFollow,   
@@ -196,15 +200,13 @@ export function Profile({
             />
           </div>
           <div>
-            <button
-              onClick={() => {
-                setSelectedPosterID(UserID);
-                setPage("userSelected");
-              }}
+            <NavLink
+              onClick={() => {setSelectedPosterID(UserID)}}
               className="TripName"
+              to="/user"
             >
               {Name}
-            </button>
+            </NavLink>
             <p style={{ marginTop: "0px", fontSize: "17px" }}>{AboutMe}</p>
             <p style={{ fontWeight: "bold", fontSize: "14px" }}>
               Next Trip: {UpcomingTrip}
@@ -255,8 +257,7 @@ export function Experience({
   Place,
   Title,
   Description,
-  setEditExperienceID,
-  setPage
+  setEditExperienceID
 }) {
   const isOwner = ActiveUser?.Bio?.UserID === PosterID;
 
@@ -279,9 +280,9 @@ export function Experience({
               </h3>
 
               {isOwner && (
-                <button onClick={() => {setEditExperienceID(ExperienceID); setPage("editExperience")}} className="EditButton" style = {{color: "#219c97", width: "30%"}}>
+                <NavLink onClick={() => {setEditExperienceID(ExperienceID)}} to="/edit-experience" className="EditButton" style = {{color: "#219c97", width: "30%",  marginLeft: "80px", marginTop: "15px"}}>
                   ✏️ Edit Experience
-                </button>
+                </NavLink>
               )}
             </span>
 
@@ -306,7 +307,6 @@ export function Experience({
 export function Feed({
   trips,
   ActiveUser,
-  setPage,
   setSelectedPosterID,
   setEditTripID = () => {},
   setViewTripID = () => {},
@@ -331,7 +331,6 @@ export function Feed({
           TripID={trip.TripID}
           {...trip}
           ActiveUser={ActiveUser}
-          setPage={setPage}
           setSelectedPosterID={setSelectedPosterID}
           setEditTripID={setEditTripID}
           setViewTripID={setViewTripID}
@@ -349,15 +348,13 @@ export function Feed({
                 Highlights from {trip.PosterID}'s trip to {trip.Location}
               </h3>
               {hasMore && (
-                <button
-                  onClick={() => {
-                    setViewTripID(trip.TripID);
-                    setPage("viewTrip");
-                  }}
+                <NavLink
+                  onClick={() => {setViewTripID(trip.TripID)}}
+                  to="/trip"
                   className = "ClassicMint"
                 >
                   View All Highlights
-                </button>
+                </NavLink>
               )}
             </div>
             <hr />
@@ -374,7 +371,6 @@ export function Feed({
                 Title={exp.Title}
                 Description={exp.Description}
                 setEditExperienceID={setExperienceID}
-                setPage={setPage}
               />
             ))}
 

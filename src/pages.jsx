@@ -1,12 +1,13 @@
 import {Entry, Profile, InputSection, Experience, Feed, Footer, DeleteTripButton , DeleteExperienceButton, ImageUpload } from "./components.jsx";
 import {Trips} from "./props.jsx";
 import { useState, useEffect } from "react";
+import { NavLink} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // every page a user can navigate to has it's fornt end code here. Some of the code looks complex but it's really not, it's just passing props back and forth and doing a few hooks and calling of functions defined in main.jsx
 
 export function MyFeed({
   ActiveUser,
-  setPage,
   setSelectedPosterID,
   setEditTripID,
   setViewTripID,
@@ -28,7 +29,6 @@ export function MyFeed({
         <Feed
         trips={feedTrips}
         ActiveUser={ActiveUser}
-        setPage={setPage}
         setSelectedPosterID={setSelectedPosterID}
         setEditTripID={setEditTripID}
         setViewTripID={setViewTripID}
@@ -46,7 +46,6 @@ export function MyFeed({
 
 export function MyTrips({
   ActiveUser,
-  setPage,
   setSelectedPosterID,
   setEditTripID,
   setViewTripID,
@@ -63,9 +62,9 @@ export function MyTrips({
 
   return (
     <>
-      <button onClick={() => setPage("addTrip")} className="SpecialRed">
+      <NavLink to="/add-trip" className="SpecialRed">
         +
-      </button>
+      </NavLink>
 
       <div style={{ height: "20px" }}></div>
 
@@ -73,7 +72,6 @@ export function MyTrips({
         <Feed
           trips={myTrips}
           ActiveUser={ActiveUser}
-          setPage={setPage}
           setSelectedPosterID={setSelectedPosterID}
           setEditTripID={setEditTripID}
           setViewTripID={setViewTripID}
@@ -98,7 +96,7 @@ export function MyTrips({
   );
 }
 
-  export function BioPage({ActiveUser, setPage, setCurrentUserID}) {
+  export function BioPage({ActiveUser, setCurrentUserID}) {
     return(
       <div style={{ textAlign: "center" }}>
           <img
@@ -116,12 +114,12 @@ export function MyTrips({
           </p>
           <div style={{ height: '20px' }}></div>
           <div style={{display: "flex", textAlign: "center", justifyContent: "center"}}>
-            <button className="ClassicRed" onClick={() => setPage("editUser")} style={{marginBottom: "40px", marginRight: "20px"}} >
+            <NavLink className="ClassicRed" to="/edit-profile" style={{marginBottom: "40px", marginRight: "20px"}} >
                 Edit Profile
-            </button>
-            <button className="ClassicRed" onClick={() => setPage("Login")} style={{marginBottom: "40px"}} >
+            </NavLink>
+            <NavLink className="ClassicRed" to="/login" style={{marginBottom: "40px"}} >
                 Logout
-            </button>
+            </NavLink>
           </div>  
           <Footer/>
         </div>
@@ -129,7 +127,7 @@ export function MyTrips({
   }
 
 // Users you're NOT following
-export function FindFriends({ ActiveUser, setPage, setSelectedPosterID, accounts, onToggleFollow }) {
+export function FindFriends({ ActiveUser, setSelectedPosterID, accounts, onToggleFollow }) {
 const notFollowing = Object.values(accounts).filter(
     account =>
       account.Bio.UserID !== ActiveUser.Bio.UserID &&
@@ -142,7 +140,6 @@ const notFollowing = Object.values(accounts).filter(
         notFollowing.map(account => (
           <Profile
             setSelectedPosterID = {setSelectedPosterID}
-            setPage={setPage}
             key={account.Bio.UserID}
             Name={account.Bio.Name}
             AboutMe={account.Bio.AboutMe}
@@ -169,7 +166,7 @@ const notFollowing = Object.values(accounts).filter(
 }
 
 // Users you ARE following
-export function MyFriends({ ActiveUser, setPage, setSelectedPosterID, accounts, onToggleFollow }) {
+export function MyFriends({ ActiveUser, setSelectedPosterID, accounts, onToggleFollow }) {
 const following = Object.values(accounts).filter(
     account =>
       account.Bio.UserID !== ActiveUser.Bio.UserID &&
@@ -183,7 +180,6 @@ const following = Object.values(accounts).filter(
         following.map(account => (
           <Profile
             setSelectedPosterID = {setSelectedPosterID}
-            setPage={setPage}
             key={account.Bio.UserID}
             Name={account.Bio.Name}
             AboutMe={account.Bio.AboutMe}
@@ -209,20 +205,22 @@ const following = Object.values(accounts).filter(
   );
 }
 
-export function TripEdit({TripID, setPage, setEditTripID, onDeleteTrip}){
+export function TripEdit({TripID, setEditTripID, onDeleteTrip}){
     return(
         <>  
           <div style={{ height: "140px"}}></div>
           <div style={{display: "flex", justifyContent: "center"}}>
-            <button 
-                onClick={() => {setEditTripID(TripID); setPage("tripEdit2")}}
+            <NavLink
+                onClick={() => {setEditTripID(TripID)}}
+                to="/edit-trip"
                 className="ClassicRed">Edit Trip! ✍️
-            </button>
+            </NavLink>
 
-            <button 
-                onClick={() => {setEditTripID(TripID); setPage("addExperience")}}
+            <NavLink 
+                onClick={() => {setEditTripID(TripID)}}
+                to="/add-experience"
                 className = "ClassicMint" style={{ marginLeft: "30px", marginRight: "30px"}}>Add New Experience! 🌄
-            </button>
+            </NavLink>
             <DeleteTripButton TripID={TripID} onDeleteTrip={onDeleteTrip} />
           </div>
         </>
@@ -231,7 +229,6 @@ export function TripEdit({TripID, setPage, setEditTripID, onDeleteTrip}){
 
 export function ViewUser({
   PosterID,
-  setPage,
   setSelectedPosterID,
   ActiveUser,
   setEditTripID,
@@ -265,7 +262,6 @@ const selectedUser = accounts[PosterID];
         UpcomingTrip={selectedUser.Bio.UpcomingTrip}
         PhotoSource={selectedUser.Bio.PhotoSource}
         ActiveUser={ActiveUser}
-        setPage={setPage}
         setSelectedPosterID={setSelectedPosterID}
         UserID={selectedUser.Bio.UserID}
         onToggleFollow={onToggleFollow}
@@ -281,7 +277,6 @@ const selectedUser = accounts[PosterID];
             <Feed
             trips={userTrips}
             ActiveUser={ActiveUser}
-            setPage={setPage}
             setSelectedPosterID={setSelectedPosterID}
             setEditTripID={setEditTripID}  
             setViewTripID={setViewTripID}    
@@ -305,7 +300,6 @@ const selectedUser = accounts[PosterID];
 
 export function ViewTrip({ 
   TripID, 
-  setPage, 
   setEditExperienceID, 
   setSelectedPosterID,
   setEditTripID, 
@@ -329,7 +323,6 @@ export function ViewTrip({
         key={trip.TripID}
         {...trip}
         ActiveUser={ActiveUser}
-        setPage={setPage}
         setSelectedPosterID={setSelectedPosterID}
         setEditTripID={setEditTripID}
         setViewTripID={() => {}}
@@ -357,7 +350,6 @@ export function ViewTrip({
                 Title={exp.Title}
                 Description={exp.Description}
                 setEditExperienceID={setEditExperienceID}
-                setPage={setPage}
             />
             ))}
         </>
@@ -552,13 +544,13 @@ export function AddExperience({
   );
 }
 
-export function EditUser({ user, onSave, setPage }) {
+export function EditUser({ user, onSave }) {
   const [name, setName] = useState(user?.Bio?.Name || "");
   const [aboutMe, setAboutMe] = useState(user?.Bio?.AboutMe || "");
   const [pinnedTrip, setPinnedTrip] = useState(user?.Bio?.PinnedTrip || "");
   const [nextTrip, setNextTrip] = useState(user?.Bio?.UpcomingTrip || "");
   const [photoSource, setPhotoSource] = useState(user?.Bio?.PhotoSource || "");
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     setName(user?.Bio?.Name || "");
@@ -580,7 +572,7 @@ export function EditUser({ user, onSave, setPage }) {
     };
 
     onSave(updatedBio);
-    setPage("myProfile");
+    navigate("/profile");
   };
 
   return (
@@ -638,7 +630,9 @@ export function EditUser({ user, onSave, setPage }) {
         </div>
         <div style={{ marginTop: "25px" }}>
             <button className="ClassicMint" type="submit" >Save Changes</button>
-            <button className="ClassicMint" style={{ marginLeft: "10px" }} onClick={() => setPage("myProfile")}>Cancel</button>
+            <NavLink className="ClassicMint" style={{ marginLeft: "10px" }} to="/profile">
+              Cancel
+            </NavLink>
         </div>
       </form>
     </>
@@ -646,7 +640,7 @@ export function EditUser({ user, onSave, setPage }) {
 }
 
 
-export function AddTrip({ ActiveUser, onSaveTrip, setPage }) {
+export function AddTrip({ ActiveUser, onSaveTrip}) {
   const [location, setLocation] = useState("");
   const [dates, setDates] = useState("");
   const [fact, setFact] = useState("");
@@ -721,9 +715,9 @@ export function AddTrip({ ActiveUser, onSaveTrip, setPage }) {
             <button className="ClassicMint" type = "submit">
             Save Trip
             </button>
-            <button className="ClassicMint" onClick={() => setPage("myTrips")}>
+            <NavLink className="ClassicMint" to="/trips">
             Cancel
-            </button>
+            </NavLink>
         </div>
       </form>
     </>
@@ -835,7 +829,7 @@ export function EditExperience({
             <DeleteExperienceButton
             ExperienceID={ExperienceID}
             onDeleteExperience={onDeleteExperience}
-            classname ="ClassicMint"
+            className ="ClassicMint"
             />
         </div>
       </form>
@@ -843,7 +837,7 @@ export function EditExperience({
   );
 }
 
-export function Login({setPage}){
+export function Login(){
     return(
       <>
         <div style={{ height: "80px" }}></div>

@@ -214,6 +214,32 @@ button:focus-visible {
   box-shadow: 0 4px 10px rgba(212, 54, 60, 0.3);
 }
 
+.ClassicRedNav {
+  background: #fcfaf7;
+  color: #d4363c;
+  border: 2px solid #d4363c;
+  padding: 4px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ClassicRedNav:hover {
+  background: #d4363c;
+  color: #fcfaf7;
+  border: 2px solid #d4363c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.ClassicRedNav.active {
+  background: #d4363c;
+  color: #fcfaf7;
+  box-shadow: 0 4px 10px rgba(212, 54, 60, 0.3);
+}
+
 .ClassicMint {
   background: #fcfaf7;
   color: #219c97;
@@ -469,7 +495,7 @@ article.Journal-Entry{
   cursor: pointer;
   color: #262626dc;
   margin-bottom: 0px;
-  margin-left: -25px;
+  margin-left: 0px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
