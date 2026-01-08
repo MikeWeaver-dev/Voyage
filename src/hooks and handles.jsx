@@ -63,7 +63,7 @@ export function useAppData() {
     return () => unsubscribe();
   }, [user]);
 
-  // Fetch all users (for Find Friends page)
+  // grabs all users (for my find friends page)
   useEffect(() => {
     if (!user) return;
 
@@ -78,7 +78,7 @@ export function useAppData() {
     return () => unsubscribe();
   }, [user]);
 
-  // Fetch all trips
+  // just grabs the trips
   useEffect(() => {
     if (!user) return;
 
@@ -93,7 +93,7 @@ export function useAppData() {
     return () => unsubscribe();
   }, [user]);
 
-  // Fetch all experiences
+  // checks all experiences
   useEffect(() => {
     if (!user) return;
 

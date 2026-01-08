@@ -28,6 +28,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "../contexts/authContext/index.jsx";
 
+//this way when you switch pages it goes to the top
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -36,6 +37,7 @@ function ScrollToTop() {
   return null;
 }
 
+//takes a sec for firestore to load and stuff 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
 
@@ -54,6 +56,7 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+//i had this directly in main but it didnt work once I added the authentication so it works better here 
 function AppContent() {
   const location = useLocation();
   const { user } = useAuth();
@@ -299,8 +302,8 @@ function AppContent() {
 
 function Main() {
   return (
-    <div style={{ backgroundColor: "#faf8f5" , minWidth: "1300px"}}>
-      <div style={{ marginLeft: "35px", marginRight: "35px", marginTop: "30px", marginBottom:"95px"}}>
+    <div style={{ backgroundColor: "#faf8f5"}}>
+      <div style={{ marginLeft: "35px", marginTop: "30px", marginBottom:"95px"}}>
         <BrowserRouter>
           <AuthProvider>
             <ScrollToTop />

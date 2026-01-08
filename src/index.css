@@ -30,9 +30,12 @@ body {
   min-height: 100vh;
   width: 100%;
   background-color: #faf8f5;
+  color: #213547;
 }
 
-
+h1, h2, h3, h4, h5, h6, p, span, div {
+  color: #213547; 
+}
 
 h1 {
   font-size: 3.2em;
@@ -606,6 +609,7 @@ h2 {
   border-radius: 10px;
   border-color: #5c5b5b;
   border-width: 2px;
+  background: white;
 }
 
 .InputSection input::placeholder,
@@ -638,6 +642,7 @@ h2 {
   border-radius: 10px;
   border-color: #219c97;
   border-width: 2px;
+  background: white;
 }
 
 .InputSectionMint input::placeholder,
@@ -797,6 +802,7 @@ h2 {
   font-size: 15px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  background: white;
 }
 
 .AuthLink {

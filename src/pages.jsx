@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/authContext";
 import {
   loginWithGoogle, loginWithEmail, registerWithEmail, resetPassword, logout,} from "../firebase/auth";
 
-// every page a user can navigate to has it's fornt end code here. Some of the code looks complex but it's really not, it's just passing props back and forth and doing a few hooks and calling of functions defined in main.jsx
+// every page a user can navigate to has it's front end code here. Some of the code looks complex but it's really not, it's just passing props back and forth and doing a few hooks and calling of functions defined in main.jsx
 
 export function MyFeed({
   ActiveUser,
@@ -37,7 +37,7 @@ export function MyFeed({
   );
 
   return (
-    <>
+    <div>
         <Feed
         trips={feedTrips}
         ActiveUser={ActiveUser}
@@ -52,7 +52,7 @@ export function MyFeed({
         handleToggleLike={handleToggleLike}
         />
         <Footer/>
-    </>
+    </div>
   );
 }
 
@@ -82,7 +82,7 @@ export function MyTrips({
   const myTrips = trips.filter(trip => trip.PosterID === userID);
 
   return (
-    <>
+    <div>
       <NavLink to="/add-trip" className="SpecialRed">
         +
       </NavLink>
@@ -90,7 +90,7 @@ export function MyTrips({
       <div style={{ height: "20px" }}></div>
 
       {myTrips.length > 0 ? (
-        <Feed
+        <Feed style ={{paddingRight: "35px", minWidth: "1000px"}}
           trips={myTrips}
           ActiveUser={ActiveUser}
           setSelectedPosterID={setSelectedPosterID}
@@ -104,16 +104,16 @@ export function MyTrips({
           handleToggleLike={handleToggleLike}
         />
       ) : (
-        <>
+        <div style ={{paddingRight: "35px", minWidth: "450px"}}>
             <div style={{ height: '100px' }}></div>
             <h2 style={{color: "gray", textAlign: "center" }}>
             You haven't posted any trips yet! Click the red + in the top left corner to post your first trip
             </h2>
             <div style={{ height: '150px' }}></div>
-        </>
+        </div>
       )}
       <Footer/>
-    </>
+    </div>
   );
 }
 
@@ -135,7 +135,7 @@ export function MyTrips({
     }
 
     return(
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: "center", paddingRight: "35px", minWidth: "450px"}}>
           <img
             src={ActiveUser.Bio.PhotoSource}
             alt={ActiveUser.Bio.Name}
@@ -170,10 +170,11 @@ const notFollowing = Object.values(accounts).filter(
   );
 
   return (
-    <>
+    <div>
       {notFollowing.length > 0 ? (
         notFollowing.map(account => (
-          <Profile
+        <div style={{paddingRight: "35px", minWidth: "1000px"}}>
+          <Profile 
             setSelectedPosterID = {setSelectedPosterID}
             key={account.Bio.UserID}
             Name={account.Bio.Name}
@@ -185,18 +186,19 @@ const notFollowing = Object.values(accounts).filter(
             UserID={account.Bio.UserID}
             onToggleFollow={onToggleFollow}
           />
+        </div>
         ))
       ) : (
-        <>
+        <div style ={{paddingRight: "35px", minWidth: "450px"}}>
             <div style={{ height: '100px'}}></div>
             <h2 style={{ color: "gray", textAlign: "center" }}>
               You are following everyone!
             </h2>
             <div style={{ height: '150px' }}></div>
-        </>
+        </div>
       )}
       <Footer/>
-    </>
+    </div>
   );
 }
 
@@ -210,39 +212,41 @@ const following = Object.values(accounts).filter(
 
   
   return (
-    <>
+    <div>
       {following.length > 0 ? (
         following.map(account => (
-          <Profile
-            setSelectedPosterID = {setSelectedPosterID}
-            key={account.Bio.UserID}
-            Name={account.Bio.Name}
-            AboutMe={account.Bio.AboutMe}
-            PinnedTrip={account.Bio.PinnedTrip}
-            UpcomingTrip={account.Bio.UpcomingTrip}
-            ActiveUser={ActiveUser}
-            PhotoSource={account.Bio.PhotoSource}
-            UserID={account.Bio.UserID}
-            onToggleFollow={onToggleFollow}
-          />
+          <div style={{paddingRight: "35px", minWidth: "1000px"}}>
+            <Profile
+              setSelectedPosterID = {setSelectedPosterID}
+              key={account.Bio.UserID}
+              Name={account.Bio.Name}
+              AboutMe={account.Bio.AboutMe}
+              PinnedTrip={account.Bio.PinnedTrip}
+              UpcomingTrip={account.Bio.UpcomingTrip}
+              ActiveUser={ActiveUser}
+              PhotoSource={account.Bio.PhotoSource}
+              UserID={account.Bio.UserID}
+              onToggleFollow={onToggleFollow}
+            />
+          </div>
         ))
       ) : (
-        <>
+        <div style={{paddingRight: "35px", minWidth: "450px"}}>
             <div style={{ height: '100px' }}></div>
             <h2 style={{ color: "gray", textAlign: "center" }}>
             You aren't following anyone yet!
             </h2>
             <div style={{ height: '150px' }}></div>
-        </>
+        </div>
       )}
       <Footer/>
-    </>
+    </div>
   );
 }
 
 export function TripEdit({TripID, setEditTripID, onDeleteTrip}){
     return(
-        <>  
+        <div style={{paddingRight: "35px", minWidth: "600px"}}>  
           <div style={{ height: "140px"}}></div>
           <div style={{display: "flex", justifyContent: "center"}}>
             <NavLink
@@ -258,7 +262,7 @@ export function TripEdit({TripID, setEditTripID, onDeleteTrip}){
             </NavLink>
             <DeleteTripButton TripID={TripID} onDeleteTrip={onDeleteTrip} />
           </div>
-        </>
+        </div>
     )
 }
 
@@ -289,7 +293,7 @@ const selectedUser = accounts[PosterID];
   const userTrips = trips.filter(trip => trip.PosterID === PosterID);
 
   return (
-    <>
+    <div style={{paddingRight: "35px", minWidth: "1000px"}}>
       <Profile
         Name={selectedUser.Bio.Name}
         AboutMe={selectedUser.Bio.AboutMe}
@@ -304,7 +308,7 @@ const selectedUser = accounts[PosterID];
 
 
       {userTrips.length > 0 ? (
-        <>
+        <div style={{paddingRight: "35px", minWidth: "1000px"}}>
             <h3 style ={{color: "#474747ff"}}>{PosterID}'s Trips:</h3>
             <hr></hr>
             <div style={{ height: '10px' }}></div>
@@ -322,14 +326,14 @@ const selectedUser = accounts[PosterID];
             getLikeCount={getLikeCount}
             handleToggleLike={handleToggleLike}
             />
-        </>
+        </div>
       ) : (
         <p style={{ textAlign: "center", color: "gray" }}>
           This user hasn’t posted any trips yet.
         </p>
       )}
       <Footer/>
-    </>
+    </div>
   );
 }
 
@@ -353,7 +357,7 @@ export function ViewTrip({
   const tripExperiences = experiences.filter(exp => exp.TripID === TripID);
 
   return (
-    <>
+    <div style={{paddingRight: "35px", minWidth: "1000px"}}>
       <Entry
         key={trip.TripID}
         {...trip}
@@ -369,7 +373,7 @@ export function ViewTrip({
 
       {tripExperiences.length > 0 ? (
 
-        <>
+        <div style={{paddingRight: "35px", minWidth: "1000px"}}>
             <h3 style ={{color: "#474747ff"}}>Trip Highlights:</h3>
             <hr></hr>
             {tripExperiences.map(exp => (
@@ -387,14 +391,14 @@ export function ViewTrip({
                 setEditExperienceID={setEditExperienceID}
             />
             ))}
-        </>
+        </div>
       ) : (
         <p style={{ textAlign: "center" }}>
           No experiences added yet for this trip.
         </p>
       )}
       <Footer/>
-    </>
+    </div>
   );
 }
 
@@ -433,7 +437,7 @@ export function TripEdit2({ TripID, Trips, onDeleteTrip, onSaveTrip }) {
   }
 
   return (
-    <>
+    <div style={{paddingRight: "35px", minWidth: "750px"}}>
       <div style={{ height: '30px' }}></div>
       <h2 style={{textAlign: "center"}}>Edit Trip ✍️</h2>
       <div style={{ height: '30px' }}></div>
@@ -486,7 +490,7 @@ export function TripEdit2({ TripID, Trips, onDeleteTrip, onSaveTrip }) {
             <DeleteTripButton TripID={TripID} onDeleteTrip={onDeleteTrip} />
         </div>
       </form>
-    </>
+    </div>
   );
 }
 
@@ -517,7 +521,7 @@ export function AddExperience({
   };
 
   return (
-    <>
+    <div style={{paddingRight: "35px", minWidth: "750px"}}>
       <div style={{ height: "30px" }}></div>
       <h2 style={{textAlign: "center"}}>Add Experience 🌄</h2>
       <div style={{ height: "30px" }}></div>
@@ -579,7 +583,7 @@ export function AddExperience({
             </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 
@@ -615,7 +619,7 @@ export function EditUser({ user, onSave }) {
   };
 
   return (
-    <>
+    <div style={{paddingRight: "35px", minWidth: "750px"}}>
       <div style={{ height: "30px" }}></div>
       <h2 style={{textAlign: "center"}}>Update Profile</h2>
       <div style={{ height: "30px" }}></div>
@@ -674,7 +678,7 @@ export function EditUser({ user, onSave }) {
             </NavLink>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 
@@ -699,7 +703,7 @@ export function AddTrip({ ActiveUser, onSaveTrip}) {
   };
 
   return (
-    <>
+    <div style={{paddingRight: "35px", minWidth: "750px"}}>
       <div style={{ height: "30px" }}></div>
       <h2 style={{textAlign: "center" }}>Add Trip ✈️</h2>
       <div style={{ height: "30px" }}></div>
@@ -761,7 +765,7 @@ export function AddTrip({ ActiveUser, onSaveTrip}) {
             </NavLink>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 
@@ -810,7 +814,7 @@ export function EditExperience({
   }
 
   return (
-    <>
+    <div style={{paddingRight: "35px", minWidth: "750px"}}>
       <div style={{ height: "30px" }}></div>
       <h2 style={{textAlign: "center"}}>Edit Experience ✍️</h2>
       <div style={{ height: "30px" }}></div>
@@ -876,7 +880,7 @@ export function EditExperience({
             />
         </div>
       </form>
-    </>
+    </div>
   );
 }
 
@@ -928,7 +932,7 @@ export function Login() {
   };
 
   return (
-    <div className="AuthPage">
+    <div className="AuthPage" style={{paddingRight: "35px", minWidth: "250px"}}>
       <div className="AuthCard">
         <h2 className="AuthTitle">
           {isSignup ? "Create your Voyage account 🌍" : "Welcome back to Voyage 🌍"}
@@ -1000,9 +1004,9 @@ export function Login() {
           Continue with Google
         </button>
 
-        <p className="AuthToggle">
+        <p className="AuthToggle" style={{ marginLeft: "15px", marginRight: "15px", marginTop: "15px", marginBotton: "15px" }}>
           {isSignup ? "Already have an account?" : "New to Voyage?"}
-          <button onClick={() => setIsSignup(!isSignup)} className = "ClassicRed--white" style={{ marginLeft: "30px" }}>
+          <button onClick={() => setIsSignup(!isSignup)} className = "ClassicRed--white" style={{ marginLeft: "15px", marginRight: "15px", marginTop: "15px", marginBotton: "15px"}}>
             {isSignup ? "Sign in" : "Create account"}
           </button>
         </p>

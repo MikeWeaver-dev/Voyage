@@ -159,7 +159,7 @@ function FollowToggle({ ActiveUser, targetUserID, onToggleFollow }) {
 
   return (
     <label className="follow-toggle">
-      <span>{isFollowing ? "Following" : "Not Following"}</span>
+      <span style={{color: "#faf8f5"}}>{isFollowing ? "Following" : "Not Following"}</span>
       <input
         type="checkbox"
         checked={isFollowing}
@@ -329,7 +329,7 @@ export function Feed({
     const hasMore = tripExperiences.length > 2;
 
     return (
-      <div key={`block-${trip.TripID}`} className="feed-trip-block">
+      <div key={`block-${trip.TripID}`} className="feed-trip-block" style ={{paddingRight: "35px", minWidth: "1000px"}}>
         <Entry
           TripID={trip.TripID}
           {...trip}
@@ -386,13 +386,13 @@ export function Feed({
 
   if (trips.length === 0) {
     return (
-        <>
+        <div style ={{paddingRight: "35px", minWidth: "450px"}}>
             <div style={{ height: '100px' }}></div>
             <h2 style={{color: "gray", textAlign: "center" }}>
             You have no feed because you are not following anyone who has posted a trip! Navigate to 'Find Friends' and follow some accounts to populate your feed!
             </h2>
             <div style={{ height: '150px' }}></div>
-        </>
+        </div>
     );
   }
 
@@ -439,12 +439,12 @@ export function Footer(){
 
 export function DeleteTripButton({ TripID, onDeleteTrip }) {
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate(); // ADD THIS
+  const navigate = useNavigate(); 
 
   const handleDelete = async () => {
     await onDeleteTrip(TripID);
     setShowModal(false);
-    navigate("/trips"); // ADD THIS
+    navigate("/trips");
   };
 
   return (
@@ -469,12 +469,12 @@ export function DeleteTripButton({ TripID, onDeleteTrip }) {
 
 export function DeleteExperienceButton({ ExperienceID, onDeleteExperience }) {
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate(); // ADD THIS
+  const navigate = useNavigate();
 
   const handleDelete = async () => {
     await onDeleteExperience(ExperienceID);
     setShowModal(false);
-    navigate("/trips"); // ADD THIS
+    navigate("/trips");
   };
 
   return (
@@ -496,67 +496,115 @@ export function DeleteExperienceButton({ ExperienceID, onDeleteExperience }) {
   );
 }
 
-
 export function ImageUpload({ onImageSelect, initialImage, defaultImage }) {
   const [preview, setPreview] = useState(
-    (initialImage && initialImage.length > 0) ? initialImage : (defaultImage || "/assets/Generic Trip.jpeg")
+    initialImage?.length
+      ? initialImage
+      : defaultImage || "/assets/Generic Trip.jpeg"
   );
   const [uploading, setUploading] = useState(false);
 
-  // Update preview when initialImage changes (e.g., when editing existing content)
   useEffect(() => {
-    if (initialImage && initialImage.length > 0) {
-      setPreview(initialImage);
-    } else if (defaultImage) {
-      setPreview(defaultImage);
-    }
+    if (initialImage?.length) setPreview(initialImage);
+    else if (defaultImage) setPreview(defaultImage);
   }, [initialImage, defaultImage]);
 
+  // image compression is for slow ios
+  const compressImage = (file, maxSize = 1600, quality = 0.8) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      const img = new Image();
+
+      reader.onload = (e) => (img.src = e.target.result);
+      reader.onerror = reject;
+
+      img.onload = () => {
+        let { width, height } = img;
+
+        if (width > height && width > maxSize) {
+          height *= maxSize / width;
+          width = maxSize;
+        } else if (height > maxSize) {
+          width *= maxSize / height;
+          height = maxSize;
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) return reject("Compression failed");
+            resolve(blob);
+          },
+          "image/jpeg",
+          quality
+        );
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleFileChange = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
 
     try {
-      const filename = `${Date.now()}_${file.name}`;
+      // gotta compress it before upload or else ios is slow
+      const compressed = await compressImage(file);
+
+      const filename = `${Date.now()}.jpg`;
       const storageRef = ref(storage, `images/${filename}`);
-      await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(storageRef);
-      
-      setPreview(downloadURL);
-      onImageSelect(downloadURL);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      alert("Failed to upload image. Please try again.");
+
+      await uploadBytes(storageRef, compressed, {
+        contentType: "image/jpeg",
+      });
+
+      const url = await getDownloadURL(storageRef);
+
+      setPreview(url);
+      onImageSelect(url);
+    } catch (err) {
+      console.error(err);
+      alert("Image upload failed");
     } finally {
       setUploading(false);
+      e.target.value = ""; // reset input for iOS
     }
   };
 
   return (
-    <div style={{ marginBottom: "20px", alignItems: "center" }}>
+    <div style={{ marginBottom: "20px", textAlign: "center" }}>
       <div className="Main-Image-Container">
         <img src={preview} alt="Preview" className="Main-Image" />
       </div>
-      <div style={{ height: "20px", alignItems: "center" }} />
-      <div style={{display:"flex", justifyContent: "center"}}>
-        <label htmlFor="file-upload" className="custom-upload-btn">
-          {uploading ? "Uploading..." : "Upload Picture"}
-        </label>
-        <div style={{width: "13px"}}></div>
-      </div>
+
+      <div style={{ height: "20px" }} />
+
+      <label htmlFor="file-upload" className="custom-upload-btn">
+        {uploading ? "Uploading..." : "Upload Picture"}
+      </label>
+
       <input
         id="file-upload"
         type="file"
         accept="image/*"
         onChange={handleFileChange}
-        style={{ display: "none" }}
         disabled={uploading}
+        style={{ display: "none" }}
       />
     </div>
   );
 }
+
+
 
 // from tailwind
 const HollowHeart = () => (
