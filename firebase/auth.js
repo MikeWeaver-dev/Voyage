@@ -10,16 +10,47 @@ import { auth } from "./firebase";
 
 const provider = new GoogleAuthProvider();
 
-export const loginWithGoogle = () =>
-  signInWithPopup(auth, provider);
+export const loginWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    return { user: result.user, error: null };
+  } catch (error) {
+    return { user: null, error };
+  }
+};
 
-export const loginWithEmail = (email, password) =>
-  signInWithEmailAndPassword(auth, email, password);
+export const loginWithEmail = async (email, password) => {
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    return { user: result.user, error: null };
+  } catch (error) {
+    return { user: null, error };
+  }
+};
 
-export const registerWithEmail = (email, password) =>
-  createUserWithEmailAndPassword(auth, email, password);
+export const registerWithEmail = async (email, password) => {
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    return { user: result.user, error: null };
+  } catch (error) {
+    return { user: null, error };
+  }
+};
 
-export const resetPassword = (email) =>
-  sendPasswordResetEmail(auth, email);
+export const resetPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    return { error: null };
+  } catch (error) {
+    return { error };
+  }
+};
 
-export const logout = () => signOut(auth);
+export const logout = async () => {
+  try {
+    await signOut(auth);
+    return { error: null };
+  } catch (error) {
+    return { error };
+  }
+};

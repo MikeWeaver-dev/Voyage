@@ -161,6 +161,7 @@ function AppContent() {
                 setSelectedPosterID={setSelectedPosterID}
                 accounts={accounts}
                 onToggleFollow={handleToggleFollow}
+                trips={trips} 
               />
             </ProtectedRoute>
           }

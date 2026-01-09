@@ -5,6 +5,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  setDoc,
   addDoc,
   updateDoc,
   deleteDoc,
@@ -30,38 +31,50 @@ export function useAppData() {
   const [viewTripID, setViewTripID] = useState(null);
   const [ExperienceID, setExperienceID] = useState(null);
 
-  // Fetch current user's profile
-  useEffect(() => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
+// Then update the useEffect:
+useEffect(() => {
+  if (!user) {
+    setLoading(false);
+    return;
+  }
 
-    const userDocRef = doc(db, "users", user.uid);
-    const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
-      if (docSnap.exists()) {
-        setActiveUser({ Bio: docSnap.data() });
-      } else {
-        // Create a new user profile if it doesn't exist
-        const newUserData = {
-          UserID: user.email.split("@")[0] || user.uid,
-          Name: user.displayName || "New User",
-          AboutMe: "Tell us about yourself!",
-          PinnedTrip: "None yet",
-          UpcomingTrip: "Planning something?",
-          PhotoSource: user.photoURL || "/assets/Generic Trip.jpeg",
-          Following: [],
-          createdAt: serverTimestamp(),
-        };
-        updateDoc(userDocRef, newUserData).then(() => {
-          setActiveUser({ Bio: newUserData });
-        });
+  const userDocRef = doc(db, "users", user.uid);
+  const unsubscribe = onSnapshot(userDocRef, async (docSnap) => {
+    if (docSnap.exists()) {
+      setActiveUser({ Bio: docSnap.data() });
+      setLoading(false);
+    } else {
+
+      const googlePhoto =
+      user.photoURL ||
+      user.providerData?.find(p => p.providerId === "google.com")?.photoURL;
+
+      // Create a new user profile if it doesn't exist
+      const newUserData = {
+        UserID: user.email?.split("@")[0] || user.uid.slice(0, 8),
+        Name: user.displayName || "New User",
+        AboutMe: "Tell us about yourself!",
+        PinnedTrip: "None yet",
+        UpcomingTrip: "Planning something?",
+        PhotoSource: googlePhoto || "/assets/Generic Avatar.png",
+        Following: [],
+        createdAt: serverTimestamp(),
+      };
+      
+      try {
+        // Use setDoc instead of updateDoc to CREATE the document
+        await setDoc(userDocRef, newUserData);
+        setActiveUser({ Bio: newUserData });
+      } catch (error) {
+        console.error("Error creating user profile:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    });
+    }
+  });
 
-    return () => unsubscribe();
-  }, [user]);
+  return () => unsubscribe();
+}, [user]);
 
   // grabs all users (for my find friends page)
   useEffect(() => {

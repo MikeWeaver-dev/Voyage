@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/authContext";
 import {
   loginWithGoogle, loginWithEmail, registerWithEmail, resetPassword, logout,} from "../firebase/auth";
 
-// every page a user can navigate to has it's front end code here. Some of the code looks complex but it's really not, it's just passing props back and forth and doing a few hooks and calling of functions defined in main.jsx
+// every page a user can navigate to has it's fornt end code here. Some of the code looks complex but it's really not, it's just passing props back and forth and doing a few hooks and calling of functions defined in main.jsx
 
 export function MyFeed({
   ActiveUser,
@@ -162,39 +162,45 @@ export function MyTrips({
   }
 
 // Users you're NOT following
-export function FindFriends({ ActiveUser, setSelectedPosterID, accounts, onToggleFollow }) {
-const notFollowing = Object.values(accounts).filter(
+export function FindFriends({ ActiveUser, setSelectedPosterID, accounts, onToggleFollow, trips }) {
+  const notFollowing = Object.values(accounts).filter(
     account =>
       account.Bio.UserID !== ActiveUser.Bio.UserID &&
       !ActiveUser.Bio.Following.includes(account.Bio.UserID)
   );
 
+  // Sort by number of trips (so random people who pass by arent on top)
+  const sortedByActivity = notFollowing.sort((a, b) => {
+    const aTrips = trips.filter(trip => trip.PosterID === a.Bio.UserID).length;
+    const bTrips = trips.filter(trip => trip.PosterID === b.Bio.UserID).length;
+    return bTrips - aTrips; // Descending order (most trips first)
+  });
+
   return (
     <div>
-      {notFollowing.length > 0 ? (
-        notFollowing.map(account => (
-        <div style={{paddingRight: "35px", minWidth: "1000px"}}>
-          <Profile 
-            setSelectedPosterID = {setSelectedPosterID}
-            key={account.Bio.UserID}
-            Name={account.Bio.Name}
-            AboutMe={account.Bio.AboutMe}
-            PinnedTrip={account.Bio.PinnedTrip}
-            UpcomingTrip={account.Bio.UpcomingTrip}
-            ActiveUser={ActiveUser}
-            PhotoSource={account.Bio.PhotoSource}
-            UserID={account.Bio.UserID}
-            onToggleFollow={onToggleFollow}
-          />
-        </div>
+      {sortedByActivity.length > 0 ? (
+        sortedByActivity.map(account => (
+          <div key={account.Bio.UserID} style={{paddingRight: "35px", minWidth: "1000px"}}>
+            <Profile 
+              setSelectedPosterID={setSelectedPosterID}
+              Name={account.Bio.Name}
+              AboutMe={account.Bio.AboutMe}
+              PinnedTrip={account.Bio.PinnedTrip}
+              UpcomingTrip={account.Bio.UpcomingTrip}
+              ActiveUser={ActiveUser}
+              PhotoSource={account.Bio.PhotoSource}
+              UserID={account.Bio.UserID}
+              onToggleFollow={onToggleFollow}
+            />
+          </div>
         ))
       ) : (
-        <div style ={{paddingRight: "35px", minWidth: "450px"}}>
-            <div style={{ height: '100px'}}></div>
-            <h2 style={{ color: "gray", textAlign: "center" }}>
-              You are following everyone!
-            </h2>
-            <div style={{ height: '150px' }}></div>
+        <div style={{paddingRight: "35px", minWidth: "450px"}}>
+          <div style={{ height: '100px'}}></div>
+          <h2 style={{ color: "gray", textAlign: "center" }}>
+            You are following everyone!
+          </h2>
+          <div style={{ height: '150px' }}></div>
         </div>
       )}
       <Footer/>
@@ -886,6 +892,7 @@ export function EditExperience({
 
 export function Login() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [isSignup, setIsSignup] = useState(false);
   const [email, setEmail] = useState("");
@@ -894,9 +901,10 @@ export function Login() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  if (user) {
-    return <Navigate to="/feed" replace />;
-  }
+  // Don't redirect here - let successful auth handle it
+  // if (user) {
+  //   return <Navigate to="/feed" replace />;
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -910,8 +918,24 @@ export function Login() {
       } else {
         await loginWithEmail(email, password);
       }
+      // Only navigate after successful auth
+      navigate("/feed", { replace: true });
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    setLoading(true);
+
+    try {
+      await loginWithGoogle();
+      navigate("/feed", { replace: true });
+    } catch (err) {
+      setError(err.message || "Failed to sign in with Google");
     } finally {
       setLoading(false);
     }
@@ -930,6 +954,11 @@ export function Login() {
       setError(err.message);
     }
   };
+
+  // Only redirect if already logged in AND we have a user
+  if (user) {
+    return <Navigate to="/feed" replace />;
+  }
 
   return (
     <div className="AuthPage" style={{paddingRight: "35px", minWidth: "250px"}}>
@@ -994,8 +1023,9 @@ export function Login() {
 
         {/* Google Sign-In */}
         <button
-          onClick={loginWithGoogle}
+          onClick={handleGoogleLogin}
           className="GoogleButton"
+          disabled={loading}
         >
           <img
             src="https://developers.google.com/identity/images/g-logo.png"
@@ -1004,9 +1034,9 @@ export function Login() {
           Continue with Google
         </button>
 
-        <p className="AuthToggle" style={{ marginLeft: "15px", marginRight: "15px", marginTop: "15px", marginBotton: "15px" }}>
+        <p className="AuthToggle" style={{ marginLeft: "15px", marginRight: "15px", marginTop: "15px", marginBottom: "15px" }}>
           {isSignup ? "Already have an account?" : "New to Voyage?"}
-          <button onClick={() => setIsSignup(!isSignup)} className = "ClassicRed--white" style={{ marginLeft: "15px", marginRight: "15px", marginTop: "15px", marginBotton: "15px"}}>
+          <button onClick={() => setIsSignup(!isSignup)} className="ClassicRed--white" style={{ marginLeft: "15px", marginRight: "15px", marginTop: "15px", marginBottom: "15px"}}>
             {isSignup ? "Sign in" : "Create account"}
           </button>
         </p>
