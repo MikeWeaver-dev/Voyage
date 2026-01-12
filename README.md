@@ -1,16 +1,67 @@
-# React + Vite
+# Voyage
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Background
 
-Currently, two official plugins are available:
+Voyage is a **working and scalable social media platform** built to showcase full-stack web development skills, with a particular focus on **server-side logic, database design, and real-world CRUD operations** paired with a clean, modern frontend.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+I built Voyage to better practice end-to-end development (from authentication to database handling) and to deepend my knowledge of CRUD operations. The app supports real interactions—creating posts and sub-posts, liking content, following friends, editing profiles, uploading photos, and more.
 
-## React Compiler
+This project was designed to be scalable indefinitely, utilizing Firebase's dynamic resource allocation to handle a theoretical spike in traffic.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Voyage is written entirely in **JavaScript and React**, with **Firebase Authentication** and **Firestore** powering the backend. It highlights how a responsive, user-friendly frontend can integrate seamlessly with a real-time database and authentication layer.
 
-## Expanding the ESLint configuration
+You can explore Voyage and its source code through my portfolio at **mikeweaver.dev**, where all related links are available.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Key Features
+
+- Full user authentication with **Google Sign-In**
+- Create, edit, and delete posts
+- Nested sub-posts
+- Like and unlike posts
+- Follow and unfollow other users
+- Editable user profiles
+- Photo uploads
+- Real-time data updates via Firestore
+- Persistent data across sessions
+- Scalable database structure designed for growth
+
+---
+
+## Tech Stack
+
+- JavaScript  
+- JSX  
+- HTML  
+- CSS  
+- React  
+- Firebase Authentication  
+- Firestore  
+
+---
+
+## Architecture Overview
+
+- **Frontend:** React-based, focused on clean UI/UX and reusable components  
+- **Backend / Database:** Firebase & Firestore for authentication, data persistence, and real-time updates  
+- **Design Approach:** Component-driven architecture to ensure consistency and maintainability  
+
+This project emphasizes **clean separation of concerns**, reusable UI patterns, and predictable data flow between the frontend and database.
+
+---
+
+## Installation
+
+### Prerequisites
+- Node.js
+- npm
+- Firebase
+
+### Setup
+
+```bash
+npm install
+npm start
+
+Note: This code does not include access to my Firebase server. You'll have to set up your own firebase and firebase connection to run the app on your own
