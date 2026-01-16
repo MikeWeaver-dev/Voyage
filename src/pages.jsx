@@ -237,7 +237,7 @@ const following = Object.values(accounts).filter(
           </div>
         ))
       ) : (
-        <div style={{paddingRight: "35px", minWidth: "450px"}}>
+        <div style={{paddingRight: "35px", minWidth: "1000px"}}>
             <div style={{ height: '100px' }}></div>
             <h2 style={{ color: "gray", textAlign: "center" }}>
             You aren't following anyone yet!
