@@ -800,6 +800,8 @@ h2 {
 .AuthInput {
   padding: 10px;
   font-size: 15px;
+  color: #000 !important;
+  /* -webkit-text-fill-color: #000 !important; */
   border-radius: 6px;
   border: 1px solid #ccc;
   background: white;
