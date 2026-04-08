@@ -57,7 +57,7 @@ useEffect(() => {
         PinnedTrip: "None yet",
         UpcomingTrip: "Planning something?",
         PhotoSource: googlePhoto || "/assets/Generic Avatar.png",
-        Following: [],
+        Following: ["MikeWeaver98"],
         createdAt: serverTimestamp(),
       };
       
